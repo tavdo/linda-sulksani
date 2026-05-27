@@ -11,7 +11,13 @@ export async function GET() {
     return NextResponse.json(await getWeddingData());
   } catch (err) {
     console.error("Failed to load wedding data", err);
-    return NextResponse.json({ error: "სერვერის შეცდომა" }, { status: 500 });
+    const message =
+      err instanceof Error ? `${err.name}: ${err.message}` : "Unknown error";
+    // Keep response generic for users, but include a short debug string.
+    return NextResponse.json(
+      { error: "სერვერის შეცდომა", debug: message },
+      { status: 500 }
+    );
   }
 }
 

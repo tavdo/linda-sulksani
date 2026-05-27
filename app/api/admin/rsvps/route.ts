@@ -12,8 +12,10 @@ export async function GET() {
     return NextResponse.json({ rsvps, stats });
   } catch (err) {
     console.error("Failed to load RSVPs/admin stats", err);
+    const message =
+      err instanceof Error ? `${err.name}: ${err.message}` : "Unknown error";
     return NextResponse.json(
-      { error: "სერვერის შეცდომა" },
+      { error: "სერვერის შეცდომა", debug: message },
       { status: 500 }
     );
   }
@@ -37,8 +39,10 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ rsvps, stats });
   } catch (err) {
     console.error("Failed to delete RSVP", err);
+    const message =
+      err instanceof Error ? `${err.name}: ${err.message}` : "Unknown error";
     return NextResponse.json(
-      { error: "სერვერის შეცდომა" },
+      { error: "სერვერის შეცდომა", debug: message },
       { status: 500 }
     );
   }

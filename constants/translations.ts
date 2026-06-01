@@ -37,7 +37,7 @@ export const translations: Record<"ka", Translations> = {
       viewMap: "რუკაზე ნახვა",
     },
     countdown: {
-      title: "სანამ კი-ს ვთქვათ",
+      title: "სანამ კის იტყვით",
       subtitle: "ვითვლით ყოველ ძვირფას წამს",
       days: "დღე",
       hours: "საათი",

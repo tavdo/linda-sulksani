@@ -75,7 +75,12 @@ export function AdminDashboard() {
       ]);
 
       if (!weddingRes.ok) {
-        setLoadError(`Wedding API error: ${weddingRes.status}`);
+        const err = (await weddingRes.json().catch(() => ({}))) as {
+          debug?: string;
+        };
+        setLoadError(
+          `Wedding API error: ${weddingRes.status}${err.debug ? ` — ${err.debug}` : ""}`
+        );
         return;
       }
 
@@ -86,7 +91,19 @@ export function AdminDashboard() {
         setRsvps(json.rsvps);
         setStats(json.stats);
       } else {
-        setMessage(`RSVP API error: ${rsvpRes.status}`);
+        const err = (await rsvpRes.json().catch(() => ({}))) as { debug?: string };
+        setRsvps([]);
+        setStats({
+          totalResponses: 0,
+          totalGuests: 0,
+          attendingYes: 0,
+          attendingNo: 0,
+          attendingMaybe: 0,
+          guestCountYes: 0,
+        });
+        setMessage(
+          `RSVP API error: ${rsvpRes.status}${err.debug ? ` — ${err.debug}` : ""}`
+        );
       }
     } catch {
       setLoadError("Network error");

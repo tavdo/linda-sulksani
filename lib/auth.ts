@@ -2,7 +2,6 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 
 const SESSION_COOKIE = "admin_session";
-const SESSION_VALUE = createHmac("sha256", getSecret()).update("admin").digest("hex");
 
 function getSecret() {
   return process.env.ADMIN_SECRET || "wedding-admin-dev-secret";
@@ -12,13 +11,17 @@ export function getAdminPassword() {
   return process.env.ADMIN_PASSWORD || "admin123";
 }
 
+function getSessionToken() {
+  return createHmac("sha256", getSecret()).update("admin").digest("hex");
+}
+
 export function createSessionToken() {
-  return SESSION_VALUE;
+  return getSessionToken();
 }
 
 export async function setAdminSession() {
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, SESSION_VALUE, {
+  cookieStore.set(SESSION_COOKIE, getSessionToken(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -38,8 +41,9 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   if (!token) return false;
 
   try {
+    const expected = getSessionToken();
     const a = Buffer.from(token);
-    const b = Buffer.from(SESSION_VALUE);
+    const b = Buffer.from(expected);
     if (a.length !== b.length) return false;
     return timingSafeEqual(a, b);
   } catch {

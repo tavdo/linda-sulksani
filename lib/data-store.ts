@@ -33,13 +33,39 @@ function defaultWeddingData(): WeddingData {
   };
 }
 
+function withDefaultImages(data: WeddingData): WeddingData {
+  if (!data.images) {
+    data.images = defaultWeddingData().images;
+  }
+  return data;
+}
+
+async function readLocalWedding(): Promise<WeddingData | null> {
+  try {
+    const raw = await fs.readFile(WEDDING_FILE, "utf-8");
+    return withDefaultImages(JSON.parse(raw) as WeddingData);
+  } catch {
+    return null;
+  }
+}
+
+async function readLocalRSVPs(): Promise<RSVPRecord[]> {
+  try {
+    const raw = await fs.readFile(RSVP_FILE, "utf-8");
+    return JSON.parse(raw) as RSVPRecord[];
+  } catch {
+    return [];
+  }
+}
+
 export async function getWeddingData(): Promise<WeddingData> {
   if (isNetlifyRuntime()) {
     const stored = await blobGetWedding();
-    if (stored) {
-      if (!stored.images) stored.images = defaultWeddingData().images;
-      return stored;
-    }
+    if (stored) return withDefaultImages(stored);
+
+    const local = await readLocalWedding();
+    if (local) return local;
+
     const initial = defaultWeddingData();
     await blobSaveWedding(initial);
     await blobSaveRSVPs([]);
@@ -49,11 +75,7 @@ export async function getWeddingData(): Promise<WeddingData> {
   await ensureDataDir();
   try {
     const raw = await fs.readFile(WEDDING_FILE, "utf-8");
-    const data = JSON.parse(raw) as WeddingData;
-    if (!data.images) {
-      data.images = defaultWeddingData().images;
-    }
-    return data;
+    return withDefaultImages(JSON.parse(raw) as WeddingData);
   } catch {
     const initial = defaultWeddingData();
     await saveWeddingData(initial);
@@ -63,7 +85,10 @@ export async function getWeddingData(): Promise<WeddingData> {
 
 export async function saveWeddingData(data: WeddingData): Promise<WeddingData> {
   if (isNetlifyRuntime()) {
-    await blobSaveWedding(data);
+    const saved = await blobSaveWedding(data);
+    if (!saved) {
+      throw new Error("Netlify Blobs unavailable — could not save wedding data");
+    }
     return data;
   }
 
@@ -74,7 +99,9 @@ export async function saveWeddingData(data: WeddingData): Promise<WeddingData> {
 
 export async function getRSVPs(): Promise<RSVPRecord[]> {
   if (isNetlifyRuntime()) {
-    return blobGetRSVPs();
+    const stored = await blobGetRSVPs();
+    if (stored) return stored;
+    return readLocalRSVPs();
   }
 
   await ensureDataDir();
@@ -99,7 +126,10 @@ export async function addRSVP(
   rsvps.unshift(record);
 
   if (isNetlifyRuntime()) {
-    await blobSaveRSVPs(rsvps);
+    const saved = await blobSaveRSVPs(rsvps);
+    if (!saved) {
+      throw new Error("Netlify Blobs unavailable — could not save RSVP");
+    }
   } else {
     await ensureDataDir();
     await fs.writeFile(RSVP_FILE, JSON.stringify(rsvps, null, 2), "utf-8");
@@ -113,7 +143,10 @@ export async function deleteRSVP(id: string): Promise<void> {
   const filtered = rsvps.filter((r) => r.id !== id);
 
   if (isNetlifyRuntime()) {
-    await blobSaveRSVPs(filtered);
+    const saved = await blobSaveRSVPs(filtered);
+    if (!saved) {
+      throw new Error("Netlify Blobs unavailable — could not delete RSVP");
+    }
   } else {
     await ensureDataDir();
     await fs.writeFile(RSVP_FILE, JSON.stringify(filtered, null, 2), "utf-8");
@@ -149,7 +182,10 @@ export async function saveUploadedFile(
   const arrayBuffer = await file.arrayBuffer();
 
   if (isNetlifyRuntime()) {
-    await blobSaveUpload(safeName, arrayBuffer, file.type || "image/jpeg");
+    const saved = await blobSaveUpload(safeName, arrayBuffer, file.type || "image/jpeg");
+    if (!saved) {
+      throw new Error("Netlify Blobs unavailable — could not upload image");
+    }
     return {
       url: `/api/uploads/${safeName}`,
       width: 800,
@@ -187,7 +223,10 @@ export async function getUploadedFile(filename: string) {
             : "image/jpeg";
 
     return {
-      data: data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer,
+      data: data.buffer.slice(
+        data.byteOffset,
+        data.byteOffset + data.byteLength
+      ) as ArrayBuffer,
       metadata: { contentType },
     };
   } catch {

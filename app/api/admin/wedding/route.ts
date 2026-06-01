@@ -3,6 +3,8 @@ import type { WeddingData } from "@/types";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { getWeddingData, saveWeddingData } from "@/lib/data-store";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "არაავტორიზებული" }, { status: 401 });

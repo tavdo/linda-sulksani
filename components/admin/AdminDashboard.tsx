@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import type { AdminStats, RSVPRecord, WeddingData, LoveStoryChapter, GalleryImage, ScheduleItem } from "@/types";
 
 type Tab = "overview" | "couple" | "events" | "story" | "gallery" | "other";
@@ -40,6 +39,87 @@ function Field({
         <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className={cls} />
       )}
     </label>
+  );
+}
+
+async function postImageUpload(file: File) {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch("/api/uploads", { method: "POST", body: form });
+  if (!res.ok) return null;
+  return res.json() as Promise<{ url: string; width: number; height: number }>;
+}
+
+function ImageUrlField({
+  label,
+  value,
+  onChange,
+  disabled,
+}: {
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  disabled?: boolean;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+
+  const handleFile = async (file: File) => {
+    setBusy(true);
+    try {
+      const result = await postImageUpload(file);
+      if (result?.url) onChange(result.url);
+    } finally {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <span className="block text-xs uppercase tracking-widest text-champagne/60">{label}</span>
+      <div className="flex gap-3">
+        {value ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={value}
+            alt=""
+            className="h-16 w-16 shrink-0 rounded-sm border border-champagne/20 object-cover"
+          />
+        ) : (
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-sm border border-dashed border-champagne/20 text-[10px] text-warm-white/30">
+            —
+          </div>
+        )}
+        <div className="min-w-0 flex-1 space-y-2">
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={disabled}
+            className="w-full border-b border-warm-white/15 bg-transparent py-2 text-sm text-warm-white outline-none focus:border-champagne disabled:opacity-50"
+          />
+          <button
+            type="button"
+            disabled={disabled || busy}
+            onClick={() => fileRef.current?.click()}
+            className="border border-champagne/40 px-3 py-1.5 text-xs uppercase tracking-widest text-champagne transition hover:bg-champagne/10 disabled:opacity-50"
+          >
+            {busy ? "იტვირთება..." : "ატვირთვა"}
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleFile(file);
+            }}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -132,35 +212,25 @@ export function AdminDashboard() {
     router.push("/admin/login");
   };
 
-  const uploadImage = async (file: File, target: "hero" | "finale" | "gallery" | "story", storyId?: string) => {
+  const addGalleryFromFile = async (file: File) => {
+    if (!data) return;
     setUploading(true);
-    const form = new FormData();
-    form.append("file", file);
-    const res = await fetch("/api/admin/upload", { method: "POST", body: form });
+    const result = await postImageUpload(file);
     setUploading(false);
-    if (!res.ok || !data) return;
-    const { url, width, height } = await res.json();
-
-    if (target === "hero") {
-      setData({ ...data, images: { ...data.images, hero: url } });
-    } else if (target === "finale") {
-      setData({ ...data, images: { ...data.images, finale: url } });
-    } else if (target === "gallery") {
-      setData({
-        ...data,
-        gallery: [
-          ...data.gallery,
-          { id: `g-${Date.now()}`, src: url, alt: "ახალი ფოტო", width, height },
-        ],
-      });
-    } else if (target === "story" && storyId) {
-      setData({
-        ...data,
-        loveStory: data.loveStory.map((c) =>
-          c.id === storyId ? { ...c, image: url } : c
-        ),
-      });
-    }
+    if (!result) return;
+    setData({
+      ...data,
+      gallery: [
+        ...data.gallery,
+        {
+          id: `g-${Date.now()}`,
+          src: result.url,
+          alt: "ახალი ფოტო",
+          width: result.width,
+          height: result.height,
+        },
+      ],
+    });
   };
 
   const deleteGallery = (id: string) => {
@@ -337,22 +407,6 @@ export function AdminDashboard() {
             <Field label="თაგი" value={data.couple.tagline} onChange={(v) => setData({ ...data, couple: { ...data.couple, tagline: v } })} />
             <Field label="თარიღი (ISO)" value={data.date} onChange={(v) => setData({ ...data, date: v })} />
             <Field label="თარიღი (ტექსტი)" value={data.dateFormatted} onChange={(v) => setData({ ...data, dateFormatted: v })} />
-
-            <div className="md:col-span-2">
-              <p className="mb-2 text-xs uppercase tracking-widest text-champagne/60">Hero ფოტო</p>
-              <div className="relative mb-2 h-40 w-full overflow-hidden rounded-sm">
-                <Image src={data.images.hero} alt="hero" fill className="object-cover" />
-              </div>
-              <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0], "hero")} className="text-xs" />
-            </div>
-            <div className="md:col-span-2">
-              <p className="mb-2 text-xs uppercase tracking-widest text-champagne/60">Finale ფოტო</p>
-              <div className="relative mb-2 h-40 w-full overflow-hidden rounded-sm">
-                <Image src={data.images.finale} alt="finale" fill className="object-cover" />
-              </div>
-              <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0], "finale")} className="text-xs" />
-            </div>
-            {uploading && <p className="text-sm text-champagne">იტვირთება...</p>}
           </div>
         )}
 
@@ -400,10 +454,12 @@ export function AdminDashboard() {
                 </div>
                 <Field label="სათაური" value={chapter.title} onChange={(v) => updateChapter(chapter.id, "title", v)} />
                 <Field label="ტექსტი" value={chapter.content} onChange={(v) => updateChapter(chapter.id, "content", v)} rows={4} />
-                <div className="relative h-32 w-48 overflow-hidden rounded-sm">
-                  <Image src={chapter.image} alt={chapter.title} fill className="object-cover" />
-                </div>
-                <input type="file" accept="image/*" onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0], "story", chapter.id)} className="text-xs" />
+                <ImageUrlField
+                  label="ფოტო URL"
+                  value={chapter.image}
+                  onChange={(url) => updateChapter(chapter.id, "image", url)}
+                  disabled={uploading}
+                />
               </div>
             ))}
           </div>
@@ -411,23 +467,58 @@ export function AdminDashboard() {
 
         {tab === "gallery" && (
           <div className="space-y-6">
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => e.target.files?.[0] && uploadImage(e.target.files[0], "gallery")}
-                className="text-sm"
-              />
-              {uploading && <span className="ml-4 text-sm text-champagne">იტვირთება...</span>}
+            <div className="flex flex-wrap items-center gap-4">
+              <label className="cursor-pointer border border-champagne/40 px-4 py-2 text-xs uppercase tracking-widest text-champagne hover:bg-champagne/10">
+                + ახალი ფოტო
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploading}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) addGalleryFromFile(file);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+              {uploading && <span className="text-sm text-champagne">იტვირთება...</span>}
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {data.gallery.map((img: GalleryImage) => (
-                <div key={img.id} className="glass space-y-2 rounded-sm p-3">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-sm">
-                    <Image src={img.src} alt={img.alt} fill className="object-cover" />
-                  </div>
-                  <Field label="alt" value={img.alt} onChange={(v) => setData({ ...data, gallery: data.gallery.map((g) => g.id === img.id ? { ...g, alt: v } : g) })} />
-                  <button onClick={() => deleteGallery(img.id)} className="text-xs text-muted-rose">წაშლა</button>
+                <div key={img.id} className="glass space-y-3 rounded-sm p-4">
+                  <ImageUrlField
+                    label="ფოტო URL"
+                    value={img.src}
+                    onChange={(url) =>
+                      setData({
+                        ...data,
+                        gallery: data.gallery.map((g) =>
+                          g.id === img.id ? { ...g, src: url } : g
+                        ),
+                      })
+                    }
+                    disabled={uploading}
+                  />
+                  <Field
+                    label="აღწერა (alt)"
+                    value={img.alt}
+                    onChange={(v) =>
+                      setData({
+                        ...data,
+                        gallery: data.gallery.map((g) =>
+                          g.id === img.id ? { ...g, alt: v } : g
+                        ),
+                      })
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() => deleteGallery(img.id)}
+                    className="text-xs text-muted-rose hover:text-red-400"
+                  >
+                    წაშლა
+                  </button>
                 </div>
               ))}
             </div>
@@ -435,11 +526,56 @@ export function AdminDashboard() {
         )}
 
         {tab === "other" && (
-          <div className="grid gap-6 md:grid-cols-2">
-            <Field label="ციტატა" value={data.quote.text} onChange={(v) => setData({ ...data, quote: { ...data.quote, text: v } })} rows={4} />
-            <Field label="ავტორი" value={data.quote.author} onChange={(v) => setData({ ...data, quote: { ...data.quote, author: v } })} />
-            <Field label="მუსიკა" value={data.music.title} onChange={(v) => setData({ ...data, music: { ...data.music, title: v } })} />
-            <Field label="შემსრულებელი" value={data.music.artist} onChange={(v) => setData({ ...data, music: { ...data.music, artist: v } })} />
+          <div className="space-y-8">
+            <div className="grid gap-6 md:grid-cols-2">
+              <ImageUrlField
+                label="Hero ფოტო"
+                value={data.images.hero}
+                onChange={(url) =>
+                  setData({ ...data, images: { ...data.images, hero: url } })
+                }
+                disabled={uploading}
+              />
+              <ImageUrlField
+                label="Finale ფოტო"
+                value={data.images.finale}
+                onChange={(url) =>
+                  setData({ ...data, images: { ...data.images, finale: url } })
+                }
+                disabled={uploading}
+              />
+              <ImageUrlField
+                label="Preloader ფოტო"
+                value={data.images.preloader}
+                onChange={(url) =>
+                  setData({ ...data, images: { ...data.images, preloader: url } })
+                }
+                disabled={uploading}
+              />
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              <Field
+                label="ციტატა"
+                value={data.quote.text}
+                onChange={(v) => setData({ ...data, quote: { ...data.quote, text: v } })}
+                rows={4}
+              />
+              <Field
+                label="ავტორი"
+                value={data.quote.author}
+                onChange={(v) => setData({ ...data, quote: { ...data.quote, author: v } })}
+              />
+              <Field
+                label="მუსიკა"
+                value={data.music.title}
+                onChange={(v) => setData({ ...data, music: { ...data.music, title: v } })}
+              />
+              <Field
+                label="შემსრულებელი"
+                value={data.music.artist}
+                onChange={(v) => setData({ ...data, music: { ...data.music, artist: v } })}
+              />
+            </div>
           </div>
         )}
       </main>

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup:client": "node scripts/setup-client.js"
   },
   "dependencies": {
     "@netlify/blobs": "^10.7.8",

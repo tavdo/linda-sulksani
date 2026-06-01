@@ -18,8 +18,15 @@ const RSVP_FILE = path.join(DATA_DIR, "rsvps.json");
 const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
 
 async function ensureDataDir() {
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.mkdir(UPLOADS_DIR, { recursive: true });
+  // Serverless (Netlify/Lambda) has a read-only filesystem — never mkdir there.
+  if (isNetlifyRuntime()) return;
+
+  try {
+    await fs.mkdir(DATA_DIR, { recursive: true });
+    await fs.mkdir(UPLOADS_DIR, { recursive: true });
+  } catch {
+    // Ignore on read-only environments
+  }
 }
 
 function defaultWeddingData(): WeddingData {

@@ -30,7 +30,7 @@ export const translations: Record<"ka", Translations> = {
       title: "ზეიმი",
       subtitle: "ელეგანტური საღამო გელოდებათ",
       ceremony: "ცერემონია",
-      reception: "რეცეპცია",
+      reception: "მიღება",
       schedule: "განრიგი",
       dressCode: "ჩაცმულობის კოდექსი",
       location: "მდებარეობა",

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
+import { useWeddingData } from "@/hooks/useWeddingData";
 import { luxuryEasing } from "@/components/animations/variants";
 
 const navItems = [
@@ -19,6 +20,7 @@ export function LuxuryNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { data: wedding } = useWeddingData();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
@@ -48,7 +50,7 @@ export function LuxuryNavbar() {
             className="text-cinematic text-xl text-champagne tracking-[0.15em] transition-opacity hover:opacity-70"
             aria-label={t("common", "scrollTop")}
           >
-            ა · ი
+            {wedding.couple.initials}
           </button>
 
           {/* Desktop nav */}

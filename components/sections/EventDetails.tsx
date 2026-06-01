@@ -1,12 +1,44 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { WeddingData } from "@/types";
+import type { VenueInfo } from "@/types";
 import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { RevealText } from "@/components/ui/RevealText";
 import { fadeUpVariants, staggerContainer } from "@/components/animations/variants";
+
+function VenueCard({
+  label,
+  venue,
+  delay,
+}: {
+  label: string;
+  venue: VenueInfo;
+  delay: number;
+}) {
+  return (
+    <GlassCard delay={delay} className="flex h-full flex-col">
+      <p className="text-editorial mb-3 text-xs uppercase tracking-[0.35em] text-champagne">
+        {label}
+      </p>
+      <h3 className="text-cinematic mb-4 text-xl leading-snug text-warm-white md:text-2xl">
+        {venue.name}
+      </h3>
+      <p className="mb-6 min-h-[4.5rem] flex-1 text-sm font-light leading-relaxed text-warm-white/55 line-clamp-4">
+        {venue.description}
+      </p>
+      <div className="mt-auto space-y-2 border-t border-champagne/15 pt-5">
+        <p className="text-cinematic text-2xl tracking-widest text-champagne">{venue.time}</p>
+        <p className="text-sm leading-relaxed text-warm-white/45">
+          {venue.address}
+          <br />
+          {venue.city}
+        </p>
+      </div>
+    </GlassCard>
+  );
+}
 
 export function EventDetails() {
   const { t } = useLanguage();
@@ -33,7 +65,7 @@ export function EventDetails() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <motion.div className="mb-20 text-center">
+        <motion.div className="mb-16 text-center md:mb-20">
           <RevealText
             text={t("events", "title")}
             as="h2"
@@ -44,42 +76,11 @@ export function EventDetails() {
           </motion.p>
         </motion.div>
 
-        {/* Event cards */}
-        <div className="mb-20 grid gap-8 md:grid-cols-2">
-          <GlassCard delay={0}>
-            <p className="text-editorial mb-4 text-champagne">{t("events", "ceremony")}</p>
-            <h3 className="text-cinematic mb-3 text-2xl text-warm-white md:text-3xl">
-              {ceremony.name}
-            </h3>
-            <p className="mb-4 text-sm font-light leading-relaxed text-warm-white/60">
-              {ceremony.description}
-            </p>
-            <motion.div className="space-y-2 border-t border-champagne/10 pt-4">
-              <p className="text-sm tracking-widest text-champagne">{ceremony.time}</p>
-              <p className="text-sm text-warm-white/50">
-                {ceremony.address}, {ceremony.city}
-              </p>
-            </motion.div>
-          </GlassCard>
-
-          <GlassCard delay={0.15}>
-            <p className="text-editorial mb-4 text-champagne">{t("events", "reception")}</p>
-            <h3 className="text-cinematic mb-3 text-2xl text-warm-white md:text-3xl">
-              {reception.name}
-            </h3>
-            <p className="mb-4 text-sm font-light leading-relaxed text-warm-white/60">
-              {reception.description}
-            </p>
-            <motion.div className="space-y-2 border-t border-champagne/10 pt-4">
-              <p className="text-sm tracking-widest text-champagne">{reception.time}</p>
-              <p className="text-sm text-warm-white/50">
-                {reception.address}, {reception.city}
-              </p>
-            </motion.div>
-          </GlassCard>
+        <div className="mb-20 grid items-stretch gap-6 md:grid-cols-2 md:gap-8">
+          <VenueCard label={t("events", "ceremony")} venue={ceremony} delay={0} />
+          <VenueCard label={t("events", "reception")} venue={reception} delay={0.15} />
         </div>
 
-        {/* Schedule timeline */}
         <motion.div variants={fadeUpVariants} className="mb-16">
           <h3 className="text-cinematic mb-10 text-center text-2xl text-warm-white">
             {t("events", "schedule")}
@@ -108,7 +109,6 @@ export function EventDetails() {
           </motion.div>
         </motion.div>
 
-        {/* Dress code */}
         <motion.div variants={fadeUpVariants} className="text-center">
           <p className="text-editorial mb-3 text-champagne/60">{t("events", "dressCode")}</p>
           <p className="font-handwritten text-2xl text-champagne-light md:text-3xl">
@@ -116,7 +116,6 @@ export function EventDetails() {
           </p>
         </motion.div>
 
-        {/* Map placeholder */}
         <motion.div
           variants={fadeUpVariants}
           className="glass mt-16 overflow-hidden rounded-sm"

@@ -12,6 +12,64 @@ import { fadeUpVariants, staggerContainer } from "@/components/animations/varian
 
 const units = ["days", "hours", "minutes", "seconds"] as const;
 
+function CountdownUnit({
+  unit,
+  value,
+  label,
+  mounted,
+  showDivider,
+}: {
+  unit: (typeof units)[number];
+  value: number;
+  label: string;
+  mounted: boolean;
+  showDivider: boolean;
+}) {
+  const display = mounted
+    ? unit === "days"
+      ? String(value)
+      : padNumber(value)
+    : unit === "days"
+      ? "0"
+      : "00";
+
+  return (
+    <>
+      <div className="flex min-w-[4.5rem] flex-col items-center px-4 md:min-w-[6rem] md:px-8">
+        <div className="relative mb-2 h-[3.5rem] overflow-hidden md:h-[4.5rem]">
+          {mounted ? (
+            <AnimatePresence mode="popLayout">
+              <motion.span
+                key={display}
+                className="text-cinematic block text-4xl leading-none text-champagne md:text-6xl"
+                initial={{ y: 16, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -16, opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                {display}
+              </motion.span>
+            </AnimatePresence>
+          ) : (
+            <span className="text-cinematic block text-4xl leading-none text-champagne/30 md:text-6xl">
+              00
+            </span>
+          )}
+        </div>
+        <p className="text-[10px] uppercase tracking-[0.35em] text-warm-white/45 md:text-xs">
+          {label}
+        </p>
+      </div>
+      {showDivider && (
+        <div
+          className="hidden h-12 w-px shrink-0 bg-gradient-to-b from-transparent via-champagne/35 to-transparent md:block"
+          aria-hidden
+        />
+      )}
+    </>
+  );
+}
+
 export function CountdownTimer() {
   const { t } = useLanguage();
   const { data: wedding } = useWeddingData();
@@ -30,15 +88,15 @@ export function CountdownTimer() {
   };
 
   return (
-    <section className="section-padding relative flex min-h-[80vh] items-center justify-center overflow-hidden">
+    <section className="section-padding relative flex min-h-[70vh] items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(201,169,98,0.06) 0%, transparent 60%)",
+            "radial-gradient(ellipse at center, rgba(201,169,98,0.05) 0%, transparent 65%)",
         }}
       />
-      <FloatingParticles count={20} color="rgba(201, 169, 98, 0.25)" />
+      <FloatingParticles count={16} color="rgba(201, 169, 98, 0.2)" />
 
       <motion.div
         className="relative z-10 mx-auto max-w-4xl px-6 text-center"
@@ -50,54 +108,40 @@ export function CountdownTimer() {
         <RevealText
           text={t("countdown", "title")}
           as="h2"
-          className="text-cinematic mb-4 text-4xl text-warm-white md:text-6xl"
+          className="text-cinematic mb-3 text-4xl text-warm-white md:text-5xl"
         />
-        <motion.p variants={fadeUpVariants} className="text-editorial mb-16 text-champagne/60">
+        <motion.p
+          variants={fadeUpVariants}
+          className="text-editorial mb-14 text-sm tracking-[0.2em] text-champagne/55 md:mb-16"
+        >
           {t("countdown", "subtitle")}
         </motion.p>
 
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
-          {units.map((unit, i) => (
-            <motion.div
-              key={unit}
-              variants={fadeUpVariants}
-              transition={{ delay: i * 0.1 }}
-              className="glass rounded-sm p-6 md:p-8"
-            >
-              <motion.div className="relative mb-3 overflow-hidden">
-                {mounted ? (
-                  <AnimatePresence mode="popLayout">
-                    <motion.span
-                      key={values[unit]}
-                      className="text-cinematic block text-5xl text-champagne md:text-7xl"
-                      initial={{ y: 20, opacity: 0, filter: "blur(4px)" }}
-                      animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                      exit={{ y: -20, opacity: 0, filter: "blur(4px)" }}
-                      transition={{ duration: 0.5 }}
-                      style={{
-                        textShadow: "0 0 40px rgba(201,169,98,0.3)",
-                      }}
-                    >
-                      {unit === "days" ? values[unit] : padNumber(values[unit])}
-                    </motion.span>
-                  </AnimatePresence>
-                ) : (
-                  <span className="text-cinematic block text-5xl text-champagne md:text-7xl opacity-0">
-                    00
-                  </span>
-                )}
-              </motion.div>
-              <p className="text-editorial text-warm-white/50">{t("countdown", unit)}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.p
+        <motion.div
           variants={fadeUpVariants}
-          className="font-handwritten mt-12 text-xl text-muted-rose-light md:text-2xl"
+          className="mx-auto flex max-w-3xl flex-wrap items-center justify-center"
         >
-          {wedding.dateFormatted}
-        </motion.p>
+          {units.map((unit, i) => (
+            <CountdownUnit
+              key={unit}
+              unit={unit}
+              value={values[unit]}
+              label={t("countdown", unit)}
+              mounted={mounted}
+              showDivider={i < units.length - 1}
+            />
+          ))}
+        </motion.div>
+
+        <motion.div
+          variants={fadeUpVariants}
+          className="mx-auto mt-14 max-w-md md:mt-16"
+        >
+          <div className="mb-6 h-px w-full bg-gradient-to-r from-transparent via-champagne/30 to-transparent" />
+          <p className="text-cinematic text-lg tracking-[0.12em] text-champagne/90 md:text-xl">
+            {wedding.dateFormatted}
+          </p>
+        </motion.div>
       </motion.div>
     </section>
   );

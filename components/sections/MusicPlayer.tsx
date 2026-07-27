@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -12,11 +12,58 @@ export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const unlockedRef = useRef(false);
+
+  const tryPlay = useCallback(async () => {
+    const audio = audioRef.current;
+    if (!audio) return false;
+    audio.loop = true;
+    audio.volume = 0.35;
+    try {
+      await audio.play();
+      setIsPlaying(true);
+      unlockedRef.current = true;
+      return true;
+    } catch {
+      setIsPlaying(false);
+      return false;
+    }
+  }, []);
+
+  // Start (or unlock) playback for the whole visit
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.loop = true;
+    audio.volume = 0.35;
+
+    // Attempt autoplay; browsers often block until a gesture
+    void tryPlay();
+
+    const unlock = () => {
+      if (unlockedRef.current) return;
+      void tryPlay();
+    };
+
+    const events: Array<keyof DocumentEventMap> = [
+      "pointerdown",
+      "touchstart",
+      "keydown",
+      "click",
+    ];
+    events.forEach((event) =>
+      document.addEventListener(event, unlock, { once: true, passive: true })
+    );
+
+    return () => {
+      events.forEach((event) => document.removeEventListener(event, unlock));
+    };
+  }, [tryPlay]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-    audio.volume = 0.3;
     if (isPlaying) {
       audio.play().catch(() => setIsPlaying(false));
     } else {
@@ -35,7 +82,13 @@ export function MusicPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src={wedding.music.src} loop preload="none" />
+      <audio
+        ref={audioRef}
+        src={wedding.music.src}
+        loop
+        preload="auto"
+        playsInline
+      />
 
       <motion.div
         className="fixed bottom-6 right-6 z-50"
@@ -44,7 +97,6 @@ export function MusicPlayer() {
         transition={{ delay: 5, duration: 1 }}
       >
         <div className="glass flex items-center gap-4 rounded-full px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-          {/* Vinyl-inspired disc */}
           <motion.button
             onClick={togglePlay}
             className="relative flex h-10 w-10 items-center justify-center"
@@ -70,7 +122,6 @@ export function MusicPlayer() {
             </span>
           </motion.button>
 
-          {/* Track info */}
           <div className="hidden sm:block">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent">
               {wedding.music.title}
@@ -78,7 +129,6 @@ export function MusicPlayer() {
             <p className="text-[9px] text-copy-muted">{wedding.music.artist}</p>
           </div>
 
-          {/* Waveform */}
           <div className="flex items-end gap-0.5">
             {[...Array(5)].map((_, i) => (
               <motion.div
@@ -100,7 +150,6 @@ export function MusicPlayer() {
             ))}
           </div>
 
-          {/* Mute */}
           <motion.button
             onClick={toggleMute}
             className={cn(

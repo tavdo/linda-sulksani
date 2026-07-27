@@ -60,39 +60,39 @@ export const WEDDING_DATA: WeddingData = {
   loveStory: [
     {
       id: "chapter-1",
-      year: "2019",
-      title: "შემთხვევითი შეხვედრა",
+      year: "2022",
+      title: "გაცნობა",
       content:
-        "ერთი შეხვედრა საკმარისი იყო, რომ ორმა გულმა ერთმანეთი ამოიცნო. იმ დღიდან ყველაფერი შეიცვალა.",
+        "2022 წლის 27 აგვისტოს ჩვენი გზები გადაიკვეთა. იმ დღიდან დაიწყო ჩვენი ისტორია.",
       image: "/uploads/couple-1.jpg",
-      accent: "ბათუმი",
+      accent: "27 აგვისტო",
     },
     {
       id: "chapter-2",
-      year: "2021",
-      title: "ერთად გაზრდილი ოცნებები",
+      year: "2022",
+      title: "მოწონება",
       content:
-        "წლები გავიდა სიცილით, მოგზაურობებითა და უთვალავი საღამოებით ერთად — და სიყვარული უფრო ღრმა გახდა.",
+        "იმავე წელს გულებმა ერთმანეთი ამოიცნო — მოწონება გადაიზარდა ნამდვილ სიყვარულში.",
       image: "/uploads/couple-2.jpg",
-      accent: "ჩვენი გზა",
+      accent: "გულით ახლოს",
     },
     {
       id: "chapter-3",
       year: "2024",
-      title: "შეთავაზება",
+      title: "ხელის თხოვნა",
       content:
-        "იმ მომენტში, როცა სულხანმა კითხვა დასვა, ლინდას გულმა უკვე იცოდა პასუხი — «კი».",
+        "2024 წლის 25 აპრილს სულხანმა ლინდას ხელი სთხოვა — და პასუხი იყო «კი».",
       image: "/uploads/couple-4.jpg",
-      accent: "უკვდავი «კი»",
+      accent: "25 აპრილი",
     },
     {
       id: "chapter-4",
-      year: "2026",
-      title: "ჩვენი ქორწილი",
+      year: "2025",
+      title: "ნიშნობა",
       content:
-        "ახლა გიწვევთ, იყოთ ჩვენი ისტორიის მოწმენი — სიყვარულის, ოჯახისა და ლამაზი ცხოვრების ზეიმზე, რომელსაც ერთად ვიზეიმებთ.",
+        "2025 წლის ივლისში ოფიციალურად დავნიშნეთ — და ახლა ერთად მივდივართ ჩვენს ქორწილამდე.",
       image: "/uploads/couple-3.jpg",
-      accent: "13 სექტემბერი",
+      accent: "ივლისი",
     },
   ],
   gallery: [
@@ -134,9 +134,9 @@ export const WEDDING_DATA: WeddingData = {
     { platform: "pinterest", url: "#", label: "Pinterest" },
   ],
   music: {
-    title: "Clair de Lune",
-    artist: "Debussy",
-    src: "/audio/ambient-piano.mp3",
+    title: "Soundtrack",
+    artist: "ლინდა & სულხანი",
+    src: "/audio/sound.mp3",
   },
   images: {
     hero: "/uploads/couple-3.jpg",

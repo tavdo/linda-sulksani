@@ -9,7 +9,6 @@ import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { FloatingParticles } from "@/components/ui/FloatingParticles";
-import { RevealText } from "@/components/ui/RevealText";
 import { luxuryEasing } from "@/components/animations/variants";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -108,13 +107,42 @@ export function HeroSection() {
           {t("hero", "subtitle")}
         </motion.p>
 
-        <RevealText
-          text={`${wedding.couple.partner1} & ${wedding.couple.partner2}`}
-          as="h1"
-          className="text-cinematic mb-8 text-5xl leading-[1.05] text-warm-white sm:text-7xl md:text-8xl lg:text-[7.5rem]"
-          delay={4}
-          splitBy="char"
-        />
+        <motion.h1
+          className="text-cinematic mb-8 text-[2.65rem] leading-[1.12] text-warm-white xs:text-5xl sm:text-6xl md:text-8xl lg:text-[7rem]"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { delayChildren: 4, staggerChildren: 0.12 } },
+          }}
+        >
+          <motion.span
+            className="block whitespace-nowrap"
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.9, ease: luxuryEasing.reveal },
+              },
+            }}
+          >
+            {wedding.couple.partner1} &
+          </motion.span>
+          <motion.span
+            className="block whitespace-nowrap"
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.9, ease: luxuryEasing.reveal },
+              },
+            }}
+          >
+            {wedding.couple.partner2}
+          </motion.span>
+        </motion.h1>
 
         <motion.div
           className="ornament mb-8"

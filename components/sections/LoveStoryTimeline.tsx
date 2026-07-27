@@ -5,21 +5,21 @@ import Image from "next/image";
 import type { WeddingData } from "@/types";
 import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
-import { RevealText } from "@/components/ui/RevealText";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useScrollReveal } from "@/components/animations/useScrollReveal";
-import { fadeUpVariants, staggerContainer } from "@/components/animations/variants";
+import { staggerContainer } from "@/components/animations/variants";
 
 export function LoveStoryTimeline() {
   const { t } = useLanguage();
   const { data: wedding } = useWeddingData();
 
   return (
-    <section id="story" className="section-padding relative overflow-hidden bg-background">
+    <section id="story" className="section-padding section-ambient relative overflow-hidden">
       <motion.div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-30"
         style={{
           background:
-            "radial-gradient(ellipse at 20% 50%, rgba(196,164,164,0.1) 0%, transparent 50%)",
+            "radial-gradient(ellipse at 15% 40%, rgba(184,149,149,0.08) 0%, transparent 50%), radial-gradient(ellipse at 85% 70%, rgba(196,165,116,0.05) 0%, transparent 45%)",
         }}
       />
 
@@ -30,19 +30,11 @@ export function LoveStoryTimeline() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="mb-20 text-center">
-          <RevealText
-            text={t("story", "title")}
-            as="h2"
-            className="text-cinematic mb-4 text-4xl text-warm-white md:text-6xl"
-          />
-          <motion.p
-            variants={fadeUpVariants}
-            className="text-editorial text-champagne/60"
-          >
-            {t("story", "subtitle")}
-          </motion.p>
-        </div>
+        <SectionHeader
+          title={t("story", "title")}
+          subtitle={t("story", "subtitle")}
+          className="mb-20"
+        />
 
         <motion.div className="relative">
           {/* Timeline line */}
@@ -83,9 +75,8 @@ function StoryChapter({
         transition={{ delay: 0.3, duration: 0.6 }}
       />
 
-      {/* Image */}
       <div ref={imageRef} className="relative flex-1">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-sm">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-sm shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
           <Image
             src={chapter.image}
             alt={chapter.title}
@@ -93,29 +84,23 @@ function StoryChapter({
             className="object-cover transition-transform duration-[2s] hover:scale-105"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-t from-matte-black/40 to-transparent"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-t from-matte-black/50 via-transparent to-matte-black/10" />
         </div>
         {chapter.accent && (
-          <span className="font-handwritten absolute -bottom-4 left-6 text-xl text-champagne md:left-auto md:right-6">
+          <span className="font-handwritten absolute -bottom-3 left-5 text-xl text-champagne md:left-auto md:right-5">
             {chapter.accent}
           </span>
         )}
       </div>
 
-      {/* Text */}
       <motion.div ref={textRef} className="relative flex-1 px-2 md:px-8">
-        <span className="text-cinematic mb-2 block text-5xl text-champagne/20 md:text-7xl">
+        <span className="text-cinematic mb-1 block text-5xl text-champagne/18 md:text-7xl">
           {chapter.year}
         </span>
-        <h3 className="text-cinematic mb-4 text-3xl text-warm-white md:text-4xl">
+        <h3 className="text-cinematic mb-5 text-3xl text-warm-white md:text-4xl">
           {chapter.title}
         </h3>
-        <p className="text-base font-light leading-relaxed tracking-wide text-warm-white/60 md:text-lg">
+        <p className="max-w-md text-base font-light leading-[1.85] tracking-wide text-warm-white/58 md:text-lg">
           {chapter.content}
         </p>
       </motion.div>

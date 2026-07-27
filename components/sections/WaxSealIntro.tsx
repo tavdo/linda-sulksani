@@ -162,21 +162,30 @@ export function WaxSealIntro() {
               transition={{ duration: 1.6, ease: luxuryEasing.reveal }}
             >
               <p className="text-editorial mb-6 text-champagne">{t("waxSeal", "revealed")}</p>
-              <h2 className="text-cinematic mb-8 text-4xl text-warm-white md:text-6xl">
+              <h2 className="text-cinematic mb-6 text-4xl text-warm-white md:text-6xl">
                 {t("waxSeal", "invitedTitle")}
               </h2>
-              <motion.div className="glass rounded-sm p-10 md:p-14">
+              <div className="ornament mb-10">
+                <span className="ornament-diamond" aria-hidden />
+              </div>
+              <motion.div className="glass relative overflow-hidden rounded-sm p-10 md:p-14">
+                <div className="pointer-events-none absolute -left-10 top-0 h-32 w-32 rounded-full bg-champagne/10 blur-[50px]" />
                 <p className="font-handwritten mb-6 text-2xl text-champagne-light md:text-3xl">
                   {t("waxSeal", "dearGuest")}
                 </p>
-                <p className="mb-6 text-base font-light leading-relaxed tracking-wide text-warm-white/70 md:text-lg">
+                <p className="mb-8 text-base font-light leading-[1.9] tracking-wide text-warm-white/68 md:text-lg">
                   {t("waxSeal", "invitationBody")
                     .replace("{partner1}", wedding.couple.partner1)
                     .replace("{partner2}", wedding.couple.partner2)
                     .replace("{date}", wedding.dateFormatted)
                     .replace("{venue}", wedding.venue.ceremony.name)}
                 </p>
-                <p className="text-sm tracking-widest text-champagne/60">
+                <div className="ornament mb-6">
+                  <span className="ornament-diamond" aria-hidden />
+                </div>
+                <p className="text-sm tracking-[0.2em] text-champagne/55">
+                  {wedding.venue.ceremony.address}
+                  <br />
                   {wedding.venue.ceremony.city}
                 </p>
               </motion.div>

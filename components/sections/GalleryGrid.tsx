@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
-import { RevealText } from "@/components/ui/RevealText";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { LightboxViewer } from "@/components/sections/LightboxViewer";
 import { fadeUpVariants, staggerContainer } from "@/components/animations/variants";
 
@@ -15,7 +15,7 @@ export function GalleryGrid() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
-    <section id="gallery" className="section-padding relative overflow-hidden bg-background">
+    <section id="gallery" className="section-padding section-ambient relative overflow-hidden">
       <motion.div
         className="relative z-10 mx-auto max-w-7xl px-6"
         variants={staggerContainer}
@@ -23,22 +23,16 @@ export function GalleryGrid() {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <div className="mb-16 text-center">
-          <RevealText
-            text={t("gallery", "title")}
-            as="h2"
-            className="text-cinematic mb-4 text-4xl text-warm-white md:text-6xl"
-          />
-          <motion.p variants={fadeUpVariants} className="text-editorial text-champagne/60">
-            {t("gallery", "subtitle")}
-          </motion.p>
-        </div>
+        <SectionHeader
+          title={t("gallery", "title")}
+          subtitle={t("gallery", "subtitle")}
+        />
 
         <div className="masonry-grid">
           {wedding.gallery.map((image, index) => (
             <motion.div
               key={image.id}
-              className="masonry-item group relative cursor-pointer overflow-hidden rounded-sm"
+              className="masonry-item group relative cursor-pointer overflow-hidden rounded-sm shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
               variants={fadeUpVariants}
               transition={{ delay: index * 0.08 }}
               onClick={() => setLightboxIndex(index)}
@@ -50,26 +44,22 @@ export function GalleryGrid() {
               <motion.div
                 className="relative overflow-hidden"
                 style={{ aspectRatio: `${image.width}/${image.height}` }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.015 }}
                 transition={{ duration: 0.8 }}
               >
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  className="object-cover transition-all duration-[1.5s] group-hover:scale-110"
+                  className="object-cover transition-all duration-[1.6s] group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <motion.div
-                  className="absolute inset-0 bg-matte-black/0 transition-colors duration-700 group-hover:bg-matte-black/30"
-                />
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-                >
-                  <span className="text-editorial border border-champagne/40 px-6 py-3 text-champagne">
+                <div className="absolute inset-0 bg-gradient-to-t from-matte-black/40 via-transparent to-transparent opacity-60 transition-opacity duration-700 group-hover:opacity-90" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+                  <span className="text-editorial border border-champagne/45 bg-matte-black/30 px-6 py-3 text-champagne backdrop-blur-sm">
                     {t("gallery", "view")}
                   </span>
-                </motion.div>
+                </div>
               </motion.div>
             </motion.div>
           ))}

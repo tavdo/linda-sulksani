@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/hooks/useLanguage";
-import { RevealText } from "@/components/ui/RevealText";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { fadeUpVariants, staggerContainer, luxuryEasing } from "@/components/animations/variants";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { staggerContainer, luxuryEasing } from "@/components/animations/variants";
 import type { RSVPFormData } from "@/types";
 
 const initialForm: RSVPFormData = {
@@ -55,16 +55,23 @@ export function RSVPForm() {
   return (
     <section id="rsvp" className="section-padding relative overflow-hidden">
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-[0.18]"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&q=80)",
+            "url(/uploads/couple-1.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "blur(8px)",
+          filter: "blur(10px)",
         }}
       />
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-background/85 backdrop-blur-md" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(196,165,116,0.08), transparent 55%)",
+        }}
+      />
 
       <motion.div
         className="relative z-10 mx-auto max-w-xl px-6"
@@ -73,16 +80,12 @@ export function RSVPForm() {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <motion.div className="mb-12 text-center">
-          <RevealText
-            text={t("rsvp", "title")}
-            as="h2"
-            className="text-cinematic mb-4 text-4xl text-warm-white md:text-5xl"
-          />
-          <motion.p variants={fadeUpVariants} className="text-editorial text-champagne/60">
-            {t("rsvp", "subtitle")}
-          </motion.p>
-        </motion.div>
+        <SectionHeader
+          title={t("rsvp", "title")}
+          subtitle={t("rsvp", "subtitle")}
+          className="mb-12"
+          titleClassName="md:text-5xl"
+        />
 
         <AnimatePresence mode="wait">
           {!submitted ? (

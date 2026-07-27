@@ -21,7 +21,7 @@ export function GlassCard({
     <motion.div
       className={cn(
         "glass rounded-sm p-8 md:p-10",
-        "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+        "shadow-[0_12px_40px_rgba(0,0,0,0.18)]",
         className
       )}
       variants={scaleRevealVariants}
@@ -32,9 +32,9 @@ export function GlassCard({
       whileHover={
         hover
           ? {
-              y: -4,
-              boxShadow: "0 16px 48px rgba(201, 169, 98, 0.12)",
-              borderColor: "rgba(201, 169, 98, 0.3)",
+              y: -5,
+              boxShadow: "0 20px 50px rgba(196, 165, 116, 0.12)",
+              borderColor: "rgba(196, 165, 116, 0.32)",
             }
           : undefined
       }

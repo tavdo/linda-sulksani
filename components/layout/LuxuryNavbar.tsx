@@ -38,7 +38,9 @@ export function LuxuryNavbar() {
       <motion.header
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-700",
-          scrolled ? "glass-strong py-3" : "bg-transparent py-6"
+          scrolled
+            ? "glass-strong border-b border-champagne/10 py-3.5"
+            : "bg-transparent py-6"
         )}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -47,33 +49,42 @@ export function LuxuryNavbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 md:px-12">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-cinematic text-xl text-champagne tracking-[0.15em] transition-opacity hover:opacity-70"
+            className="text-cinematic text-xl tracking-[0.18em] text-champagne transition-opacity hover:opacity-70"
             aria-label={t("common", "scrollTop")}
           >
             {wedding.couple.initials}
           </button>
 
-          {/* Desktop nav */}
           <ul className="hidden items-center gap-10 md:flex">
             {navItems.map((item) => (
               <li key={item.key}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className="text-editorial text-warm-white/70 transition-all duration-500 hover:text-champagne hover:tracking-[0.35em]"
+                  className="text-editorial group relative text-warm-white/65 transition-colors duration-500 hover:text-champagne"
                 >
                   {t("nav", item.key)}
+                  <span className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-champagne/70 transition-all duration-500 group-hover:w-full" />
                 </button>
               </li>
             ))}
           </ul>
 
-          <motion.div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <button
               onClick={toggleTheme}
-              className="text-warm-white/50 transition-colors hover:text-champagne"
+              className="text-warm-white/45 transition-colors hover:text-champagne"
               aria-label={t("common", "toggleTheme")}
             >
-              {theme === "dark" ? "☀" : "☾"}
+              {theme === "dark" ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                  <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z" />
+                </svg>
+              )}
             </button>
             <button
               className="flex flex-col gap-1.5 md:hidden"
@@ -99,31 +110,30 @@ export function LuxuryNavbar() {
                 )}
               />
             </button>
-          </motion.div>
+          </div>
         </nav>
       </motion.header>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center glass-strong md:hidden"
+            className="glass-strong fixed inset-0 z-40 flex flex-col items-center justify-center md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
           >
-            <ul className="flex flex-col items-center gap-8">
+            <ul className="flex flex-col items-center gap-9">
               {navItems.map((item, i) => (
                 <motion.li
                   key={item.key}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.08 }}
                 >
                   <button
                     onClick={() => handleNavClick(item.href)}
-                    className="text-cinematic text-3xl text-warm-white tracking-[0.1em]"
+                    className="text-cinematic text-3xl tracking-[0.08em] text-warm-white"
                   >
                     {t("nav", item.key)}
                   </button>

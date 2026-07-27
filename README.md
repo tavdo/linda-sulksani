@@ -1,6 +1,8 @@
-# Lumière — Luxury Cinematic Wedding Invitation
+# ლინდა & სულხანი — ქორწილის მოწვევა
 
-A premium, cinematic digital wedding invitation platform built with Next.js, Framer Motion, GSAP, and Lenis smooth scrolling.
+ციფრული ქორწილის მოწვევა ლინდასა და სულხანისთვის — **13 სექტემბერი, 2026**, დარბაზი **რენესანსი** (ფრიდონ ხალვაშის 83, ბათუმი).
+
+Built with Next.js, Framer Motion, GSAP, and Lenis smooth scrolling.
 
 ## Features
 

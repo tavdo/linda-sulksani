@@ -29,20 +29,20 @@ export function FinaleSection() {
         />
       </motion.div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-matte-black/60 via-matte-black/70 to-matte-black/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-matte-black/65 via-matte-black/72 to-matte-black/92" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(12,11,10,0.55)_100%)]" />
       <div className="film-grain absolute inset-0" />
-      <FloatingParticles count={35} color="rgba(255, 220, 180, 0.3)" />
+      <FloatingParticles count={30} color="rgba(255, 220, 180, 0.28)" />
 
-      {/* Candle glow effects */}
       <motion.div
-        className="pointer-events-none absolute left-1/4 top-1/3 h-32 w-32 rounded-full bg-champagne/10 blur-[60px]"
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.1, 1] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute left-1/4 top-1/3 h-36 w-36 rounded-full bg-champagne/12 blur-[70px]"
+        animate={{ opacity: [0.3, 0.65, 0.3], scale: [1, 1.12, 1] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute right-1/4 bottom-1/3 h-40 w-40 rounded-full bg-muted-rose/10 blur-[70px]"
+        className="pointer-events-none absolute right-1/4 bottom-1/3 h-44 w-44 rounded-full bg-muted-rose/10 blur-[80px]"
         animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.15, 1] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
 
       <motion.div
@@ -52,8 +52,12 @@ export function FinaleSection() {
         viewport={{ once: true }}
         transition={{ duration: 1.8, ease: luxuryEasing.reveal }}
       >
+        <div className="ornament mb-10">
+          <span className="ornament-diamond" aria-hidden />
+        </div>
+
         <motion.blockquote
-          className="text-cinematic mb-12 text-3xl leading-relaxed text-warm-white/90 md:text-5xl md:leading-snug"
+          className="text-cinematic mb-10 text-3xl leading-relaxed text-warm-white/90 md:text-5xl md:leading-snug"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -63,7 +67,7 @@ export function FinaleSection() {
         </motion.blockquote>
 
         <motion.p
-          className="text-editorial mb-16 text-champagne/50"
+          className="text-editorial mb-16 text-champagne/45"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -81,10 +85,13 @@ export function FinaleSection() {
           <p className="font-handwritten mb-4 text-3xl text-champagne-light md:text-4xl">
             {t("finale", "thankYou")}
           </p>
-          <p className="text-cinematic text-2xl text-warm-white md:text-3xl">
+          <p className="text-cinematic text-2xl text-warm-white md:text-4xl">
             {wedding.couple.partner1} & {wedding.couple.partner2}
           </p>
-          <p className="text-editorial mt-8 text-warm-white/40">
+          <div className="ornament my-8">
+            <span className="ornament-diamond" aria-hidden />
+          </div>
+          <p className="text-editorial text-warm-white/40">
             {t("finale", "message")}
           </p>
         </motion.div>

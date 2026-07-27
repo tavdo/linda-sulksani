@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     locale: "ka_GE",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80",
+        url: "/uploads/couple-3.jpg",
         width: 1200,
         height: 630,
         alt: "ქორწილის მოწვევა",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${WEDDING_DATA.couple.partner1} & ${WEDDING_DATA.couple.partner2}`,
     description: WEDDING_DATA.couple.tagline,
-    images: ["https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80"],
+    images: ["/uploads/couple-3.jpg"],
   },
   robots: { index: true, follow: true },
 };

@@ -26,7 +26,7 @@ export function HeroSection() {
     if (!section || !bg) return;
 
     gsap.to(bg, {
-      scale: 1.15,
+      scale: 1.12,
       ease: "none",
       scrollTrigger: {
         trigger: section,
@@ -52,30 +52,35 @@ export function HeroSection() {
       ref={sectionRef}
       className="relative flex h-screen min-h-[700px] items-center justify-center overflow-hidden"
     >
-      {/* Cinematic background */}
       <motion.div
         ref={bgRef}
         className="absolute inset-0 scale-110"
-        initial={{ scale: 1.2, filter: "blur(8px)" }}
-        animate={{ scale: 1.1, filter: "blur(0px)" }}
-        transition={{ duration: 2.5, ease: luxuryEasing.cinematic, delay: 3.2 }}
+        initial={{ scale: 1.22, filter: "blur(10px)" }}
+        animate={{ scale: 1.08, filter: "blur(0px)" }}
+        transition={{ duration: 2.8, ease: luxuryEasing.cinematic, delay: 3.2 }}
       >
         <Image
           src={wedding.images.hero}
-          alt="პარიზის ქორწილის ატმოსფერო"
+          alt="ლინდა და სულხანის ქორწილის ატმოსფერო"
           fill
           priority
-          className="object-cover"
+          className="object-cover object-[center_22%]"
           sizes="100vw"
         />
       </motion.div>
 
-      {/* Overlays */}
+      {/* Cinematic overlays */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-matte-black/70 via-matte-black/50 to-matte-black/80"
+        className="absolute inset-0 bg-gradient-to-b from-matte-black/75 via-matte-black/45 to-matte-black/85"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.5, delay: 3 }}
+        transition={{ duration: 1.6, delay: 3 }}
+      />
+      <motion.div
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(12,11,10,0.55)_100%)]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, delay: 3.2 }}
       />
       <motion.div
         className="film-grain absolute inset-0"
@@ -84,23 +89,21 @@ export function HeroSection() {
         transition={{ delay: 3.5 }}
       />
 
-      {/* Light leak */}
-      <div className="animate-light-leak pointer-events-none absolute -left-1/4 top-1/4 h-96 w-96 rounded-full bg-champagne/10 blur-[100px]" />
+      <div className="animate-light-leak pointer-events-none absolute -left-1/4 top-1/4 h-[28rem] w-[28rem] rounded-full bg-champagne/12 blur-[110px]" />
       <motion.div
-        className="pointer-events-none absolute -right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-muted-rose/10 blur-[80px]"
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="pointer-events-none absolute -right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-muted-rose/10 blur-[90px]"
+        animate={{ opacity: [0.25, 0.55, 0.25] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <FloatingParticles count={25} />
+      <FloatingParticles count={22} />
 
-      {/* Content */}
       <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
         <motion.p
-          className="text-editorial mb-8 text-champagne/80"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-editorial mb-6 text-champagne/75"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.8, duration: 1.2, ease: luxuryEasing.reveal }}
+          transition={{ delay: 3.8, duration: 1.1, ease: luxuryEasing.reveal }}
         >
           {t("hero", "subtitle")}
         </motion.p>
@@ -108,22 +111,31 @@ export function HeroSection() {
         <RevealText
           text={`${wedding.couple.partner1} & ${wedding.couple.partner2}`}
           as="h1"
-          className="text-cinematic mb-6 text-5xl leading-tight text-warm-white sm:text-7xl md:text-8xl lg:text-9xl"
+          className="text-cinematic mb-8 text-5xl leading-[1.05] text-warm-white sm:text-7xl md:text-8xl lg:text-[7.5rem]"
           delay={4}
           splitBy="char"
         />
 
+        <motion.div
+          className="ornament mb-8"
+          initial={{ opacity: 0, scaleX: 0.6 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ delay: 4.6, duration: 1 }}
+        >
+          <span className="ornament-diamond" aria-hidden />
+        </motion.div>
+
         <motion.p
-          className="font-handwritten mb-4 text-2xl text-champagne-light md:text-3xl"
+          className="font-handwritten mb-3 text-2xl text-champagne-light md:text-3xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.8, duration: 1.5 }}
+          transition={{ delay: 4.9, duration: 1.4 }}
         >
           {wedding.dateFormatted}
         </motion.p>
 
         <motion.p
-          className="mx-auto mb-12 max-w-md text-sm font-light tracking-widest text-warm-white/50"
+          className="mx-auto mb-12 max-w-sm text-sm font-light tracking-[0.22em] text-warm-white/45"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 5.2, duration: 1 }}
@@ -132,7 +144,7 @@ export function HeroSection() {
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 5.5, duration: 1, ease: luxuryEasing.reveal }}
         >
@@ -142,17 +154,14 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 6, duration: 1 }}
       >
-        <span className="text-editorial text-warm-white/40">{t("hero", "scroll")}</span>
-        <motion.div
-          className="animate-scroll-pulse h-12 w-px bg-gradient-to-b from-champagne/60 to-transparent"
-        />
+        <span className="text-editorial text-warm-white/35">{t("hero", "scroll")}</span>
+        <div className="animate-scroll-pulse h-14 w-px bg-gradient-to-b from-champagne/55 to-transparent" />
       </motion.div>
     </section>
   );

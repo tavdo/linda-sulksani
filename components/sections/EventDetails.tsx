@@ -1,44 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { VenueInfo } from "@/types";
 import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { RevealText } from "@/components/ui/RevealText";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { fadeUpVariants, staggerContainer } from "@/components/animations/variants";
-
-function VenueCard({
-  label,
-  venue,
-  delay,
-}: {
-  label: string;
-  venue: VenueInfo;
-  delay: number;
-}) {
-  return (
-    <GlassCard delay={delay} className="flex h-full flex-col">
-      <p className="text-editorial mb-3 text-xs uppercase tracking-[0.35em] text-champagne">
-        {label}
-      </p>
-      <h3 className="text-cinematic mb-4 text-xl leading-snug text-warm-white md:text-2xl">
-        {venue.name}
-      </h3>
-      <p className="mb-6 min-h-[4.5rem] flex-1 text-sm font-light leading-relaxed text-warm-white/55 line-clamp-4">
-        {venue.description}
-      </p>
-      <div className="mt-auto space-y-2 border-t border-champagne/15 pt-5">
-        <p className="text-cinematic text-2xl tracking-widest text-champagne">{venue.time}</p>
-        <p className="text-sm leading-relaxed text-warm-white/45">
-          {venue.address}
-          <br />
-          {venue.city}
-        </p>
-      </div>
-    </GlassCard>
-  );
-}
 
 export function EventDetails() {
   const { t } = useLanguage();
@@ -46,105 +13,131 @@ export function EventDetails() {
   const { ceremony, reception } = wedding.venue;
 
   return (
-    <section id="events" className="section-padding relative overflow-hidden bg-matte-black/30">
-      <motion.div
-        className="absolute inset-0 opacity-10"
+    <section
+      id="events"
+      className="section-padding section-ambient relative overflow-hidden"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage:
-            "url(https://images.unsplash.com/photo-1465497426031-b4251a645b41?w=1920&q=80)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "blur(2px)",
+            "radial-gradient(ellipse at 30% 20%, rgba(196,165,116,0.35), transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(184,149,149,0.2), transparent 45%)",
         }}
       />
 
       <motion.div
-        className="relative z-10 mx-auto max-w-6xl px-6"
+        className="relative z-10 mx-auto max-w-5xl px-6"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
       >
-        <motion.div className="mb-16 text-center md:mb-20">
-          <RevealText
-            text={t("events", "title")}
-            as="h2"
-            className="text-cinematic mb-4 text-4xl text-warm-white md:text-6xl"
-          />
-          <motion.p variants={fadeUpVariants} className="text-editorial text-champagne/60">
-            {t("events", "subtitle")}
-          </motion.p>
-        </motion.div>
+        <SectionHeader
+          title={t("events", "title")}
+          subtitle={t("events", "subtitle")}
+        />
 
-        <div className="mb-20 grid items-stretch gap-6 md:grid-cols-2 md:gap-8">
-          <VenueCard label={t("events", "ceremony")} venue={ceremony} delay={0} />
-          <VenueCard label={t("events", "reception")} venue={reception} delay={0.15} />
-        </div>
+        {/* Single venue showcase */}
+        <GlassCard delay={0} className="relative mb-16 overflow-hidden text-center md:mb-20">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-champagne/8 blur-[60px]" />
+          <p className="text-editorial mb-4 text-champagne/70">
+            {t("events", "location")}
+          </p>
+          <h3 className="text-cinematic mb-3 text-3xl text-warm-white md:text-5xl">
+            {ceremony.name}
+          </h3>
+          <p className="mx-auto mb-8 max-w-lg text-sm font-light leading-relaxed text-warm-white/55 md:text-base">
+            {ceremony.description}
+          </p>
 
+          <div className="ornament mb-8">
+            <span className="ornament-diamond" aria-hidden />
+          </div>
+
+          <div className="mx-auto grid max-w-md gap-8 sm:grid-cols-2">
+            <div>
+              <p className="text-editorial mb-2 text-champagne/50">
+                {t("events", "ceremony")}
+              </p>
+              <p className="text-cinematic text-3xl tracking-widest text-champagne">
+                {ceremony.time}
+              </p>
+            </div>
+            <div>
+              <p className="text-editorial mb-2 text-champagne/50">
+                {t("events", "reception")}
+              </p>
+              <p className="text-cinematic text-3xl tracking-widest text-champagne">
+                {reception.time}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 border-t border-champagne/12 pt-8">
+            <p className="text-sm leading-relaxed tracking-wide text-warm-white/50">
+              {ceremony.address}
+              <br />
+              {ceremony.city}
+            </p>
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(
+                `${ceremony.name}, ${ceremony.address}, ${ceremony.city}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-editorial mt-6 inline-block border-b border-champagne/35 pb-1 text-champagne transition-colors hover:border-champagne hover:text-champagne-light"
+            >
+              {t("events", "viewMap")}
+            </a>
+          </div>
+        </GlassCard>
+
+        {/* Schedule */}
         <motion.div variants={fadeUpVariants} className="mb-16">
-          <h3 className="text-cinematic mb-10 text-center text-2xl text-warm-white">
+          <h3 className="text-cinematic mb-12 text-center text-2xl text-warm-white md:text-3xl">
             {t("events", "schedule")}
           </h3>
-          <motion.div className="relative mx-auto max-w-2xl">
-            <div className="absolute left-4 top-0 h-full w-px bg-champagne/20 md:left-1/2 md:-translate-x-1/2" />
+          <div className="relative mx-auto max-w-xl">
+            <div className="absolute left-[0.55rem] top-2 bottom-2 w-px bg-gradient-to-b from-transparent via-champagne/25 to-transparent md:left-1/2 md:-translate-x-1/2" />
             {wedding.schedule.map((item, i) => (
               <motion.div
                 key={item.title}
-                className="relative mb-8 flex items-start gap-6 pl-12 md:pl-0"
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                className="relative mb-10 flex items-start gap-6 pl-10 last:mb-0 md:pl-0"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.8 }}
+                transition={{ delay: i * 0.08, duration: 0.7 }}
               >
-                <div className="absolute left-2.5 top-1.5 h-3 w-3 rounded-full border border-champagne bg-background md:left-1/2 md:-translate-x-1/2" />
-                <motion.div className="md:w-1/2 md:pr-12 md:text-right">
-                  <p className="text-sm tracking-widest text-champagne">{item.time}</p>
-                </motion.div>
-                <div className="md:w-1/2 md:pl-12">
-                  <h4 className="text-cinematic text-lg text-warm-white">{item.title}</h4>
-                  <p className="text-sm text-warm-white/50">{item.description}</p>
+                <div className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full border border-champagne/80 bg-background shadow-[0_0_12px_rgba(196,165,116,0.35)] md:left-1/2 md:-translate-x-1/2" />
+                <div
+                  className={`w-full md:w-1/2 ${
+                    i % 2 === 0
+                      ? "md:pr-12 md:text-right"
+                      : "md:ml-auto md:pl-12"
+                  }`}
+                >
+                  <p className="mb-1 text-sm tracking-[0.2em] text-champagne">
+                    {item.time}
+                  </p>
+                  <h4 className="text-cinematic text-xl text-warm-white">
+                    {item.title}
+                  </h4>
+                  <p className="mt-1 text-sm font-light text-warm-white/45">
+                    {item.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.div variants={fadeUpVariants} className="text-center">
-          <p className="text-editorial mb-3 text-champagne/60">{t("events", "dressCode")}</p>
-          <p className="font-handwritten text-2xl text-champagne-light md:text-3xl">
+          <p className="text-editorial mb-4 text-champagne/55">
+            {t("events", "dressCode")}
+          </p>
+          <p className="font-handwritten mx-auto max-w-lg text-2xl leading-snug text-champagne-light md:text-3xl">
             {wedding.dressCode}
           </p>
-        </motion.div>
-
-        <motion.div
-          variants={fadeUpVariants}
-          className="glass mt-16 overflow-hidden rounded-sm"
-        >
-          <div className="relative flex h-64 items-center justify-center md:h-80">
-            <div
-              className="absolute inset-0 opacity-40"
-              style={{
-                backgroundImage:
-                  "url(https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&q=80)",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div className="absolute inset-0 bg-matte-black/50" />
-            <div className="relative z-10 text-center">
-              <p className="text-editorial mb-2 text-champagne">{t("events", "location")}</p>
-              <p className="text-cinematic text-2xl text-warm-white">{ceremony.city}</p>
-              <p className="mt-2 text-sm text-warm-white/50">{ceremony.name}</p>
-              <a
-                href={`https://maps.google.com/?q=${ceremony.coordinates.lat},${ceremony.coordinates.lng}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-editorial mt-6 inline-block border-b border-champagne/40 pb-1 text-champagne transition-colors hover:border-champagne"
-              >
-                {t("events", "viewMap")}
-              </a>
-            </div>
-          </div>
         </motion.div>
       </motion.div>
     </section>

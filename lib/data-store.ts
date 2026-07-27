@@ -33,9 +33,9 @@ function defaultWeddingData(): WeddingData {
   return {
     ...WEDDING_DATA,
     images: {
-      hero: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80",
-      finale: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1920&q=80",
-      preloader: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80",
+      hero: "/uploads/couple-3.jpg",
+      finale: "/uploads/couple-4.jpg",
+      preloader: "/uploads/couple-4.jpg",
     },
   };
 }

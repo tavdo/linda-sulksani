@@ -6,7 +6,7 @@ import { useWeddingData } from "@/hooks/useWeddingData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useCountdown } from "@/hooks/useCountdown";
 import { padNumber } from "@/lib/utils";
-import { RevealText } from "@/components/ui/RevealText";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FloatingParticles } from "@/components/ui/FloatingParticles";
 import { fadeUpVariants, staggerContainer } from "@/components/animations/variants";
 
@@ -17,13 +17,11 @@ function CountdownUnit({
   value,
   label,
   mounted,
-  showDivider,
 }: {
   unit: (typeof units)[number];
   value: number;
   label: string;
   mounted: boolean;
-  showDivider: boolean;
 }) {
   const display = mounted
     ? unit === "days"
@@ -34,39 +32,31 @@ function CountdownUnit({
       : "00";
 
   return (
-    <>
-      <div className="flex min-w-[4.5rem] flex-col items-center px-4 md:min-w-[6rem] md:px-8">
-        <div className="relative mb-2 h-[3.5rem] overflow-hidden md:h-[4.5rem]">
-          {mounted ? (
-            <AnimatePresence mode="popLayout">
-              <motion.span
-                key={display}
-                className="text-cinematic block text-4xl leading-none text-champagne md:text-6xl"
-                initial={{ y: 16, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -16, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                {display}
-              </motion.span>
-            </AnimatePresence>
-          ) : (
-            <span className="text-cinematic block text-4xl leading-none text-champagne/30 md:text-6xl">
-              00
-            </span>
-          )}
-        </div>
-        <p className="text-[10px] uppercase tracking-[0.35em] text-warm-white/45 md:text-xs">
-          {label}
-        </p>
+    <div className="glass flex min-w-[4.75rem] flex-col items-center rounded-sm px-4 py-5 md:min-w-[7rem] md:px-6 md:py-7">
+      <div className="relative mb-3 h-[2.75rem] overflow-hidden md:h-[3.75rem]">
+        {mounted ? (
+          <AnimatePresence mode="popLayout">
+            <motion.span
+              key={display}
+              className="text-cinematic block text-4xl leading-none text-champagne md:text-5xl lg:text-6xl"
+              initial={{ y: 14, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -14, opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              {display}
+            </motion.span>
+          </AnimatePresence>
+        ) : (
+          <span className="text-cinematic block text-4xl leading-none text-champagne/25 md:text-5xl lg:text-6xl">
+            00
+          </span>
+        )}
       </div>
-      {showDivider && (
-        <div
-          className="hidden h-12 w-px shrink-0 bg-gradient-to-b from-transparent via-champagne/35 to-transparent md:block"
-          aria-hidden
-        />
-      )}
-    </>
+      <p className="text-[10px] uppercase tracking-[0.32em] text-warm-white/40 md:text-[11px]">
+        {label}
+      </p>
+    </div>
   );
 }
 
@@ -93,10 +83,10 @@ export function CountdownTimer() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(201,169,98,0.05) 0%, transparent 65%)",
+            "radial-gradient(ellipse at center, rgba(196,165,116,0.07) 0%, transparent 60%)",
         }}
       />
-      <FloatingParticles count={16} color="rgba(201, 169, 98, 0.2)" />
+      <FloatingParticles count={14} color="rgba(196, 165, 116, 0.18)" />
 
       <motion.div
         className="relative z-10 mx-auto max-w-4xl px-6 text-center"
@@ -105,40 +95,32 @@ export function CountdownTimer() {
         whileInView="visible"
         viewport={{ once: true }}
       >
-        <RevealText
-          text={t("countdown", "title")}
-          as="h2"
-          className="text-cinematic mb-3 text-4xl text-warm-white md:text-5xl"
+        <SectionHeader
+          title={t("countdown", "title")}
+          subtitle={t("countdown", "subtitle")}
+          className="mb-12 md:mb-14"
         />
-        <motion.p
-          variants={fadeUpVariants}
-          className="text-editorial mb-14 text-sm tracking-[0.2em] text-champagne/55 md:mb-16"
-        >
-          {t("countdown", "subtitle")}
-        </motion.p>
 
         <motion.div
           variants={fadeUpVariants}
-          className="mx-auto flex max-w-3xl flex-wrap items-center justify-center"
+          className="mx-auto flex max-w-3xl flex-wrap items-stretch justify-center gap-3 md:gap-4"
         >
-          {units.map((unit, i) => (
+          {units.map((unit) => (
             <CountdownUnit
               key={unit}
               unit={unit}
               value={values[unit]}
               label={t("countdown", unit)}
               mounted={mounted}
-              showDivider={i < units.length - 1}
             />
           ))}
         </motion.div>
 
-        <motion.div
-          variants={fadeUpVariants}
-          className="mx-auto mt-14 max-w-md md:mt-16"
-        >
-          <div className="mb-6 h-px w-full bg-gradient-to-r from-transparent via-champagne/30 to-transparent" />
-          <p className="text-cinematic text-lg tracking-[0.12em] text-champagne/90 md:text-xl">
+        <motion.div variants={fadeUpVariants} className="mx-auto mt-14 max-w-md md:mt-16">
+          <div className="ornament mb-6">
+            <span className="ornament-diamond" aria-hidden />
+          </div>
+          <p className="text-cinematic text-lg tracking-[0.1em] text-champagne/85 md:text-xl">
             {wedding.dateFormatted}
           </p>
         </motion.div>

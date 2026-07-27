@@ -53,7 +53,7 @@ export function MusicPlayer() {
             whileTap={{ scale: 0.95 }}
           >
             <motion.div
-              className="absolute inset-0 rounded-full border border-champagne/30"
+              className="absolute inset-0 rounded-full border border-accent/30"
               style={{
                 background:
                   "radial-gradient(circle, #1a1816 30%, #2a2826 31%, #1a1816 32%, #2a2826 50%, #1a1816 51%)",
@@ -65,17 +65,17 @@ export function MusicPlayer() {
                 ease: "linear",
               }}
             />
-            <span className="relative z-10 text-[8px] text-champagne">
+            <span className="relative z-10 text-[8px] text-accent">
               {isPlaying ? "❚❚" : "▶"}
             </span>
           </motion.button>
 
           {/* Track info */}
           <div className="hidden sm:block">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-champagne">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-accent">
               {wedding.music.title}
             </p>
-            <p className="text-[9px] text-warm-white/40">{wedding.music.artist}</p>
+            <p className="text-[9px] text-copy-muted">{wedding.music.artist}</p>
           </div>
 
           {/* Waveform */}
@@ -83,7 +83,7 @@ export function MusicPlayer() {
             {[...Array(5)].map((_, i) => (
               <motion.div
                 key={i}
-                className="w-0.5 rounded-full bg-champagne/60"
+                className="w-0.5 rounded-full bg-accent/60"
                 animate={
                   isPlaying
                     ? {
@@ -105,7 +105,7 @@ export function MusicPlayer() {
             onClick={toggleMute}
             className={cn(
               "text-sm transition-colors",
-              isMuted ? "text-warm-white/30" : "text-champagne/70 hover:text-champagne"
+              isMuted ? "text-copy-muted" : "text-accent/80 hover:text-accent"
             )}
             aria-label={isMuted ? t("common", "unmute") : t("common", "mute")}
             whileTap={{ scale: 0.9 }}

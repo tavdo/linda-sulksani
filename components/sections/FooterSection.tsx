@@ -23,7 +23,7 @@ export function FooterSection() {
   };
 
   return (
-    <footer className="relative border-t border-champagne/10 bg-matte-black/50 py-16">
+    <footer className="relative border-t border-champagne/10 bg-matte-black py-16 text-warm-white">
       <motion.div
         className="mx-auto max-w-6xl px-6"
         variants={staggerContainer}

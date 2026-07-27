@@ -33,6 +33,8 @@ export function LuxuryNavbar() {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const overHero = !scrolled;
+
   return (
     <>
       <motion.header
@@ -49,7 +51,10 @@ export function LuxuryNavbar() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 md:px-12">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-cinematic text-xl tracking-[0.18em] text-champagne transition-opacity hover:opacity-70"
+            className={cn(
+              "text-cinematic text-xl tracking-[0.18em] transition-opacity hover:opacity-70",
+              overHero ? "text-champagne-light" : "text-accent"
+            )}
             aria-label={t("common", "scrollTop")}
           >
             {wedding.couple.initials}
@@ -60,10 +65,13 @@ export function LuxuryNavbar() {
               <li key={item.key}>
                 <button
                   onClick={() => handleNavClick(item.href)}
-                  className="text-editorial group relative text-warm-white/65 transition-colors duration-500 hover:text-champagne"
+                  className={cn(
+                    "text-editorial group relative transition-colors duration-500 hover:text-accent",
+                    overHero ? "text-warm-white/75" : "text-copy-soft"
+                  )}
                 >
                   {t("nav", item.key)}
-                  <span className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-champagne/70 transition-all duration-500 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-1/2 h-px w-0 -translate-x-1/2 bg-accent/70 transition-all duration-500 group-hover:w-full" />
                 </button>
               </li>
             ))}
@@ -72,7 +80,10 @@ export function LuxuryNavbar() {
           <div className="flex items-center gap-5">
             <button
               onClick={toggleTheme}
-              className="text-warm-white/45 transition-colors hover:text-champagne"
+              className={cn(
+                "transition-colors hover:text-accent",
+                overHero ? "text-warm-white/55" : "text-copy-muted"
+              )}
               aria-label={t("common", "toggleTheme")}
             >
               {theme === "dark" ? (
@@ -93,19 +104,22 @@ export function LuxuryNavbar() {
             >
               <span
                 className={cn(
-                  "block h-px w-6 bg-champagne transition-all duration-500",
+                  "block h-px w-6 transition-all duration-500",
+                  overHero ? "bg-champagne-light" : "bg-accent",
                   menuOpen && "translate-y-[7px] rotate-45"
                 )}
               />
               <span
                 className={cn(
-                  "block h-px w-6 bg-champagne transition-all duration-500",
+                  "block h-px w-6 transition-all duration-500",
+                  overHero ? "bg-champagne-light" : "bg-accent",
                   menuOpen && "opacity-0"
                 )}
               />
               <span
                 className={cn(
-                  "block h-px w-6 bg-champagne transition-all duration-500",
+                  "block h-px w-6 transition-all duration-500",
+                  overHero ? "bg-champagne-light" : "bg-accent",
                   menuOpen && "-translate-y-[7px] -rotate-45"
                 )}
               />
@@ -133,7 +147,7 @@ export function LuxuryNavbar() {
                 >
                   <button
                     onClick={() => handleNavClick(item.href)}
-                    className="text-cinematic text-3xl tracking-[0.08em] text-warm-white"
+                    className="text-cinematic text-3xl tracking-[0.08em] text-copy"
                   >
                     {t("nav", item.key)}
                   </button>

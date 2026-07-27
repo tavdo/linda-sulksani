@@ -113,7 +113,7 @@ export function RSVPForm() {
               />
 
               <div>
-                <label className="text-editorial mb-4 block text-champagne/60">
+                <label className="text-editorial mb-4 block text-accent/80">
                   {t("rsvp", "attending")}
                 </label>
                 <motion.div className="flex flex-wrap gap-3">
@@ -124,8 +124,8 @@ export function RSVPForm() {
                       onClick={() => updateField("attending", option)}
                       className={`px-5 py-3 text-xs uppercase tracking-[0.2em] transition-all duration-500 ${
                         form.attending === option
-                          ? "border border-champagne bg-champagne/10 text-champagne"
-                          : "border border-warm-white/10 text-warm-white/50 hover:border-champagne/30"
+                          ? "border border-accent bg-accent/10 text-accent"
+                          : "border border-copy/15 text-copy-muted hover:border-accent/30"
                       }`}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -136,23 +136,23 @@ export function RSVPForm() {
               </div>
 
               <div>
-                <label className="text-editorial mb-4 block text-champagne/60">
+                <label className="text-editorial mb-4 block text-accent/80">
                   {t("rsvp", "guests")}
                 </label>
                 <div className="flex items-center gap-6">
                   <motion.button
                     type="button"
                     onClick={() => updateField("guestCount", Math.max(1, form.guestCount - 1))}
-                    className="flex h-10 w-10 items-center justify-center border border-champagne/30 text-champagne transition-colors hover:bg-champagne/10"
+                    className="flex h-10 w-10 items-center justify-center border border-accent/30 text-accent transition-colors hover:bg-accent/10"
                     whileTap={{ scale: 0.9 }}
                   >
                     −
                   </motion.button>
-                  <span className="text-cinematic text-3xl text-warm-white">{form.guestCount}</span>
+                  <span className="text-cinematic text-3xl text-copy">{form.guestCount}</span>
                   <motion.button
                     type="button"
                     onClick={() => updateField("guestCount", Math.min(6, form.guestCount + 1))}
-                    className="flex h-10 w-10 items-center justify-center border border-champagne/30 text-champagne transition-colors hover:bg-champagne/10"
+                    className="flex h-10 w-10 items-center justify-center border border-accent/30 text-accent transition-colors hover:bg-accent/10"
                     whileTap={{ scale: 0.9 }}
                   >
                     +
@@ -185,17 +185,17 @@ export function RSVPForm() {
               transition={{ duration: 1, ease: luxuryEasing.reveal }}
             >
               <motion.div
-                className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-champagne"
+                className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-accent"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
               >
-                <span className="text-2xl text-champagne">✓</span>
+                <span className="text-2xl text-accent">✓</span>
               </motion.div>
-              <h3 className="text-cinematic mb-3 text-3xl text-warm-white">
+              <h3 className="text-cinematic mb-3 text-3xl text-copy">
                 {t("rsvp", "success")}
               </h3>
-              <p className="text-sm tracking-wide text-warm-white/60">
+              <p className="text-sm tracking-wide text-copy-soft">
                 {t("rsvp", "successMessage")}
               </p>
             </motion.div>
@@ -229,8 +229,8 @@ function FloatingInput({
       <motion.label
         className={`pointer-events-none absolute left-0 transition-all duration-500 ${
           active
-            ? "-top-6 text-xs tracking-[0.2em] text-champagne"
-            : "top-3 text-sm text-warm-white/40"
+            ? "-top-6 text-xs tracking-[0.2em] text-accent"
+            : "top-3 text-sm text-copy-muted"
         }`}
         animate={{ y: active ? 0 : 0 }}
       >
@@ -243,8 +243,8 @@ function FloatingInput({
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`w-full border-b bg-transparent py-3 text-warm-white outline-none transition-colors duration-500 ${
-          error ? "border-muted-rose" : "border-warm-white/20 focus:border-champagne"
+        className={`w-full border-b bg-transparent py-3 text-copy outline-none transition-colors duration-500 ${
+          error ? "border-muted-rose" : "border-copy/20 focus:border-accent"
         }`}
       />
       <AnimatePresence>
@@ -280,8 +280,8 @@ function FloatingTextarea({
       <label
         className={`pointer-events-none absolute left-0 transition-all duration-500 ${
           active
-            ? "-top-6 text-xs tracking-[0.2em] text-champagne"
-            : "top-3 text-sm text-warm-white/40"
+            ? "-top-6 text-xs tracking-[0.2em] text-accent"
+            : "top-3 text-sm text-copy-muted"
         }`}
       >
         {label}
@@ -292,7 +292,7 @@ function FloatingTextarea({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         rows={3}
-        className="w-full resize-none border-b border-warm-white/20 bg-transparent py-3 text-warm-white outline-none transition-colors duration-500 focus:border-champagne"
+        className="w-full resize-none border-b border-copy/20 bg-transparent py-3 text-copy outline-none transition-colors duration-500 focus:border-accent"
       />
     </motion.div>
   );

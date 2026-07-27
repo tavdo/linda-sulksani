@@ -38,7 +38,7 @@ function CountdownUnit({
           <AnimatePresence mode="popLayout">
             <motion.span
               key={display}
-              className="text-cinematic block text-4xl leading-none text-champagne md:text-5xl lg:text-6xl"
+              className="text-cinematic block text-4xl leading-none text-accent md:text-5xl lg:text-6xl"
               initial={{ y: 14, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -14, opacity: 0 }}
@@ -48,12 +48,12 @@ function CountdownUnit({
             </motion.span>
           </AnimatePresence>
         ) : (
-          <span className="text-cinematic block text-4xl leading-none text-champagne/25 md:text-5xl lg:text-6xl">
+          <span className="text-cinematic block text-4xl leading-none text-accent/30 md:text-5xl lg:text-6xl">
             00
           </span>
         )}
       </div>
-      <p className="text-[10px] uppercase tracking-[0.32em] text-warm-white/40 md:text-[11px]">
+      <p className="text-[10px] uppercase tracking-[0.32em] text-copy-muted md:text-[11px]">
         {label}
       </p>
     </div>
@@ -120,7 +120,7 @@ export function CountdownTimer() {
           <div className="ornament mb-6">
             <span className="ornament-diamond" aria-hidden />
           </div>
-          <p className="text-cinematic text-lg tracking-[0.1em] text-champagne/85 md:text-xl">
+          <p className="text-cinematic text-lg tracking-[0.1em] text-accent md:text-xl">
             {wedding.dateFormatted}
           </p>
         </motion.div>

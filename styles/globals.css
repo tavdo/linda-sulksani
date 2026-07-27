@@ -7,24 +7,34 @@
   --champagne: #c4a574;
   --champagne-light: #e4d2b0;
   --champagne-deep: #9a7b4f;
-  --champagne-glow: rgba(196, 165, 116, 0.35);
+  --champagne-glow: rgba(196, 165, 116, 0.3);
   --soft-beige: #e5ddd2;
   --pearl: #f0ebe4;
   --matte-black: #141210;
   --ink: #1c1916;
-  --muted-rose: #b89595;
-  --muted-rose-light: #d0b4b4;
+  --muted-rose: #9a7070;
+  --muted-rose-light: #b89595;
   --background: var(--ivory);
   --foreground: var(--matte-black);
-  --glass-bg: rgba(251, 248, 243, 0.07);
-  --glass-border: rgba(196, 165, 116, 0.18);
+  --copy: #1a1714;
+  --copy-soft: #4a433c;
+  --copy-muted: #6e655c;
+  --accent: #8a6a38;
+  --accent-soft: #6f542c;
+  --glass-bg: rgba(26, 23, 20, 0.04);
+  --glass-border: rgba(138, 106, 56, 0.28);
   --overlay: rgba(20, 18, 16, 0.62);
-  --section-glow: rgba(196, 165, 116, 0.06);
+  --section-glow: rgba(138, 106, 56, 0.08);
 }
 
 [data-theme="dark"] {
   --background: #0c0b0a;
   --foreground: var(--warm-white);
+  --copy: #fbf8f3;
+  --copy-soft: rgba(251, 248, 243, 0.68);
+  --copy-muted: rgba(251, 248, 243, 0.48);
+  --accent: #c4a574;
+  --accent-soft: #e4d2b0;
   --glass-bg: rgba(251, 248, 243, 0.035);
   --glass-border: rgba(196, 165, 116, 0.14);
   --overlay: rgba(12, 11, 10, 0.72);
@@ -45,6 +55,11 @@
   --color-muted-rose-light: var(--muted-rose-light);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-copy: var(--copy);
+  --color-copy-soft: var(--copy-soft);
+  --color-copy-muted: var(--copy-muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-jost);
 }
@@ -125,10 +140,10 @@ body::before {
 }
 
 .glass-strong {
-  background: rgba(251, 248, 243, 0.05);
+  background: color-mix(in srgb, var(--copy) 5%, transparent);
   backdrop-filter: blur(44px) saturate(1.2);
   -webkit-backdrop-filter: blur(44px) saturate(1.2);
-  border: 1px solid rgba(196, 165, 116, 0.22);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 /* Luxury text styles */
@@ -163,7 +178,7 @@ body::before {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(196, 165, 116, 0.45),
+    color-mix(in srgb, var(--accent) 55%, transparent),
     transparent
   );
 }
@@ -172,8 +187,8 @@ body::before {
   width: 5px;
   height: 5px;
   rotate: 45deg;
-  background: var(--champagne);
-  opacity: 0.7;
+  background: var(--accent);
+  opacity: 0.75;
   flex-shrink: 0;
 }
 

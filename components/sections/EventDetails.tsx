@@ -40,13 +40,13 @@ export function EventDetails() {
         {/* Single venue showcase */}
         <GlassCard delay={0} className="relative mb-16 overflow-hidden text-center md:mb-20">
           <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-champagne/8 blur-[60px]" />
-          <p className="text-editorial mb-4 text-champagne/70">
+          <p className="text-editorial mb-4 text-accent/80">
             {t("events", "location")}
           </p>
-          <h3 className="text-cinematic mb-3 text-3xl text-warm-white md:text-5xl">
+          <h3 className="text-cinematic mb-3 text-3xl text-copy md:text-5xl">
             {ceremony.name}
           </h3>
-          <p className="mx-auto mb-8 max-w-lg text-sm font-light leading-relaxed text-warm-white/55 md:text-base">
+          <p className="mx-auto mb-8 max-w-lg text-sm font-light leading-relaxed text-copy-soft md:text-base">
             {ceremony.description}
           </p>
 
@@ -56,25 +56,25 @@ export function EventDetails() {
 
           <div className="mx-auto grid max-w-md gap-8 sm:grid-cols-2">
             <div>
-              <p className="text-editorial mb-2 text-champagne/50">
+              <p className="text-editorial mb-2 text-accent/70">
                 {t("events", "ceremony")}
               </p>
-              <p className="text-cinematic text-3xl tracking-widest text-champagne">
+              <p className="text-cinematic text-3xl tracking-widest text-accent">
                 {ceremony.time}
               </p>
             </div>
             <div>
-              <p className="text-editorial mb-2 text-champagne/50">
+              <p className="text-editorial mb-2 text-accent/70">
                 {t("events", "reception")}
               </p>
-              <p className="text-cinematic text-3xl tracking-widest text-champagne">
+              <p className="text-cinematic text-3xl tracking-widest text-accent">
                 {reception.time}
               </p>
             </div>
           </div>
 
           <div className="mt-10 border-t border-champagne/12 pt-8">
-            <p className="text-sm leading-relaxed tracking-wide text-warm-white/50">
+            <p className="text-sm leading-relaxed tracking-wide text-copy-muted">
               {ceremony.address}
               <br />
               {ceremony.city}
@@ -85,7 +85,7 @@ export function EventDetails() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-editorial mt-6 inline-block border-b border-champagne/35 pb-1 text-champagne transition-colors hover:border-champagne hover:text-champagne-light"
+              className="text-editorial mt-6 inline-block border-b border-champagne/35 pb-1 text-accent transition-colors hover:border-champagne hover:text-accent-soft"
             >
               {t("events", "viewMap")}
             </a>
@@ -94,7 +94,7 @@ export function EventDetails() {
 
         {/* Schedule */}
         <motion.div variants={fadeUpVariants} className="mb-16">
-          <h3 className="text-cinematic mb-12 text-center text-2xl text-warm-white md:text-3xl">
+          <h3 className="text-cinematic mb-12 text-center text-2xl text-copy md:text-3xl">
             {t("events", "schedule")}
           </h3>
           <div className="relative mx-auto max-w-xl">
@@ -116,13 +116,13 @@ export function EventDetails() {
                       : "md:ml-auto md:pl-12"
                   }`}
                 >
-                  <p className="mb-1 text-sm tracking-[0.2em] text-champagne">
+                  <p className="mb-1 text-sm tracking-[0.2em] text-accent">
                     {item.time}
                   </p>
-                  <h4 className="text-cinematic text-xl text-warm-white">
+                  <h4 className="text-cinematic text-xl text-copy">
                     {item.title}
                   </h4>
-                  <p className="mt-1 text-sm font-light text-warm-white/45">
+                  <p className="mt-1 text-sm font-light text-copy-muted">
                     {item.description}
                   </p>
                 </div>
@@ -132,10 +132,10 @@ export function EventDetails() {
         </motion.div>
 
         <motion.div variants={fadeUpVariants} className="text-center">
-          <p className="text-editorial mb-4 text-champagne/55">
+          <p className="text-editorial mb-4 text-accent/75">
             {t("events", "dressCode")}
           </p>
-          <p className="font-handwritten mx-auto max-w-lg text-2xl leading-snug text-champagne-light md:text-3xl">
+          <p className="font-handwritten mx-auto max-w-lg text-2xl leading-snug text-accent-soft md:text-3xl">
             {wedding.dressCode}
           </p>
         </motion.div>

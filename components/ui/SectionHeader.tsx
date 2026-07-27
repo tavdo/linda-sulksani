@@ -27,14 +27,14 @@ export function SectionHeader({
         text={title}
         as="h2"
         className={cn(
-          "text-cinematic mb-5 text-4xl text-warm-white md:text-6xl",
+          "text-cinematic mb-5 text-4xl text-copy md:text-6xl",
           titleClassName
         )}
       />
       {subtitle && (
         <motion.p
           variants={fadeUpVariants}
-          className="text-editorial text-champagne/55"
+          className="text-editorial text-accent/80"
         >
           {subtitle}
         </motion.p>

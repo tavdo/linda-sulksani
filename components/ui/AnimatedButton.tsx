@@ -20,7 +20,7 @@ export function AnimatedButton({
       "bg-champagne/90 text-matte-black border border-champagne/35 shadow-[0_0_40px_rgba(196,165,116,0.18)]",
     secondary:
       "bg-transparent text-warm-white border border-champagne/45 hover:bg-champagne/10 hover:border-champagne/70",
-    ghost: "bg-transparent text-champagne border-none",
+    ghost: "bg-transparent text-accent border-none",
   };
 
   return (

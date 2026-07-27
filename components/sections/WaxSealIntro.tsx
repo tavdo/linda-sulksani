@@ -50,7 +50,7 @@ export function WaxSealIntro() {
               exit={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-editorial mb-12 text-champagne/60">
+              <p className="text-editorial mb-12 text-accent/75">
                 {t("waxSeal", "instruction")}
               </p>
 
@@ -146,7 +146,7 @@ export function WaxSealIntro() {
               </motion.button>
 
               <motion.p
-                className="text-editorial mt-12 text-warm-white/40"
+                className="text-editorial mt-12 text-copy-muted"
                 animate={{ opacity: [0.4, 0.8, 0.4] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
@@ -161,8 +161,8 @@ export function WaxSealIntro() {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1.6, ease: luxuryEasing.reveal }}
             >
-              <p className="text-editorial mb-6 text-champagne">{t("waxSeal", "revealed")}</p>
-              <h2 className="text-cinematic mb-6 text-4xl text-warm-white md:text-6xl">
+              <p className="text-editorial mb-6 text-accent">{t("waxSeal", "revealed")}</p>
+              <h2 className="text-cinematic mb-6 text-4xl text-copy md:text-6xl">
                 {t("waxSeal", "invitedTitle")}
               </h2>
               <div className="ornament mb-10">
@@ -170,10 +170,10 @@ export function WaxSealIntro() {
               </div>
               <motion.div className="glass relative overflow-hidden rounded-sm p-10 md:p-14">
                 <div className="pointer-events-none absolute -left-10 top-0 h-32 w-32 rounded-full bg-champagne/10 blur-[50px]" />
-                <p className="font-handwritten mb-6 text-2xl text-champagne-light md:text-3xl">
+                <p className="font-handwritten mb-6 text-2xl text-accent-soft md:text-3xl">
                   {t("waxSeal", "dearGuest")}
                 </p>
-                <p className="mb-8 text-base font-light leading-[1.9] tracking-wide text-warm-white/68 md:text-lg">
+                <p className="mb-8 text-base font-light leading-[1.9] tracking-wide text-copy-soft md:text-lg">
                   {t("waxSeal", "invitationBody")
                     .replace("{partner1}", wedding.couple.partner1)
                     .replace("{partner2}", wedding.couple.partner2)
@@ -183,7 +183,7 @@ export function WaxSealIntro() {
                 <div className="ornament mb-6">
                   <span className="ornament-diamond" aria-hidden />
                 </div>
-                <p className="text-sm tracking-[0.2em] text-champagne/55">
+                <p className="text-sm tracking-[0.2em] text-accent/70">
                   {wedding.venue.ceremony.address}
                   <br />
                   {wedding.venue.ceremony.city}

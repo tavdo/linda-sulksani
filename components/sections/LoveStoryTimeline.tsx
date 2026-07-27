@@ -87,20 +87,20 @@ function StoryChapter({
           <div className="absolute inset-0 bg-gradient-to-t from-matte-black/50 via-transparent to-matte-black/10" />
         </div>
         {chapter.accent && (
-          <span className="font-handwritten absolute -bottom-3 left-5 text-xl text-champagne md:left-auto md:right-5">
+          <span className="font-handwritten absolute -bottom-3 left-5 text-xl text-accent md:left-auto md:right-5">
             {chapter.accent}
           </span>
         )}
       </div>
 
       <motion.div ref={textRef} className="relative flex-1 px-2 md:px-8">
-        <span className="text-cinematic mb-1 block text-5xl text-champagne/18 md:text-7xl">
+        <span className="text-cinematic mb-1 block text-5xl text-accent/25 md:text-7xl">
           {chapter.year}
         </span>
-        <h3 className="text-cinematic mb-5 text-3xl text-warm-white md:text-4xl">
+        <h3 className="text-cinematic mb-5 text-3xl text-copy md:text-4xl">
           {chapter.title}
         </h3>
-        <p className="max-w-md text-base font-light leading-[1.85] tracking-wide text-warm-white/58 md:text-lg">
+        <p className="max-w-md text-base font-light leading-[1.85] tracking-wide text-copy-soft md:text-lg">
           {chapter.content}
         </p>
       </motion.div>
